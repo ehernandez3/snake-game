@@ -11,13 +11,18 @@ const SNAKE_BORDER_COLOR = 'darkgreen';
 * Each object contains a set of coordinates
 * that represent a part of the snake.
 */
- let snake = [
+let snake = [
     {x: 150, y: 150},
     {x: 140, y: 150},
     {x: 130, y: 150},
     {x: 120, y: 150},
     {x: 110, y: 150}
-    ];
+];
+
+// Horizontal velocity
+let dx = 10;
+// Vertical velocity
+let dy = 0;
 
 
 // Get canvas element
@@ -38,6 +43,37 @@ context.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
 // Draw a "border" around the entire canvas
 context.strokeRect(0, 0, gameCanvas.width, gameCanvas.height);
 
+
+// Move one step right
+advanceSnake();
+// Change vertical velocity to 0
+dx = 0;
+// Change horizontal velocity to -10
+dy = -10;
+// Move one step up
+advanceSnake();
+
+drawSnake();
+
+/**
+ * Advances snake by changing the x-coordinates of its parts
+ * according to the horizontal velocity and the y-coordinates of its parts
+ * according to the vertical veolocity
+ */
+function advanceSnake() {
+    const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+    snake.unshift(head);
+    snake.pop();
+}
+
+/**
+ * Draws entire snake on canvas
+ */
+function drawSnake() {
+    // Loops through snake parts drawing each part to canvas
+    snake.forEach(drawSnakePart)
+}
+
 /**
  * Draws part of snake on canvas
  * @param snakePart - Coordinates where part should be drawn
@@ -57,13 +93,3 @@ function drawSnakePart(snakePart) {
     // passed
     context.strokeRect(snakePart.x, snakePart.y, 10, 10);
 }
-
-/**
- * Draws entire snake on canvas
- */
-function drawSnake() {
-    // Loops through snake parts drawing each part to canvas
-    snake.forEach(drawSnakePart)
-}
-
-drawSnake();
